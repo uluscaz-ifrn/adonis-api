@@ -32,7 +32,19 @@ export default class PostsController {
       async show({params, response}: HttpContext) {
         const post = await Post.find(params.id);
 
-        
+        if (!post) {
+          return response.status(404).json({ message: 'Post não encontrado' })
+        }
         return response.json(post);
+      }
+
+      async delete({params, response}: HttpContext) {
+        const post = await Post.find(params.id);
+        if (!post) {
+          return response.status(404).json({ message: 'Post não encontrado' })
+        } else{
+          await post.delete();
+          return response.status(201).json({ message: 'Post deletado' })
+        }
       }
 }
